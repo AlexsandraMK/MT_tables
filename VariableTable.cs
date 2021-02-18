@@ -8,9 +8,9 @@ namespace Lab_1
     {
         struct ATTRIBUTS
         {
-            public string type;   // Определяет тип идентификатора
-            public bool value;  // Определяет имеет ли идентификатор значение
-            public bool change;  // Определяет можно ли менять значение идентификатора
+            public string type;     // Определяет тип идентификатора
+            public bool value;      // Определяет имеет ли идентификатор значение
+            public bool change;     // Определяет можно ли менять значение идентификатора
         };
 
         // Словарь. Ключ - идентификатор. Значение - атрибуты
@@ -87,10 +87,10 @@ namespace Lab_1
         }
 
         // what_search определяет по каким атрибутам производить поиск.
-        // Первый символ определяет искать ли по ATTRIBUTS.type ('t' - искать; 'n' - не искать)
-        // Второй символ определяет искать ли по ATTRIBUTS.value ('v' - искать; 'n' - не искать)
-        // Третий символ определяет искать ли по ATTRIBUTS.change ('c' - искать; 'n' - не искать)
-        public List<string> SearchAttribut(string type, bool value, bool change, char[] what_search)  // Поиск индентификаторов по атрибутам.
+        // Первый символ определяет искать ли по ATTRIBUTS.type (1 - искать; 0 - не искать)
+        // Второй символ определяет искать ли по ATTRIBUTS.value (1 - искать; 0 - не искать)
+        // Третий символ определяет искать ли по ATTRIBUTS.change (1 - искать; 0 - не искать)
+        public List<string> SearchAttribut(string type, bool value, bool change, bool[] what_search)  // Поиск индентификаторов по атрибутам.
         {
             List<string> identifiers = new List<string>();
 
@@ -98,33 +98,23 @@ namespace Lab_1
             {
                 ATTRIBUTS atr_in_table = variable_table[key];   // Атрибуты данного ключа таблицы
                 string find_key = key;
-                for (int i = 0; i < 3 && find_key == key; i++)
+
+                if(what_search[0])  // Искать ли по типу?
                 {
-                    char flag = what_search[i];
-                    switch(flag)
-                    {
-                        case 't':   // Поиск по типу
-                            if(atr_in_table.type != type)
-                                find_key = null;
-                            break;
+                    if (atr_in_table.type != type)
+                        find_key = null;
+                }
 
-                        case 'v':   // Поиск по значению
-                            if(atr_in_table.value != value)
-                                find_key = null;
-                            break;
+                if (what_search[1]) // Искать ли по значению(имеется или нет)?
+                { 
+                    if (atr_in_table.value != value)
+                        find_key = null;
+                }
 
-                        case 'c':   // Поиск по изменению
-                            if (atr_in_table.change != change)
-                                find_key = null;
-                            break;
-
-                        case 'n':   // По этому атрибуту не идет поиск
-                            break;
-
-                        default:    // Неправильно ввели переменную what_search
-                            Console.WriteLine("Невозможно определить что вы ищете");
-                            break;
-                    }
+                if (what_search[2]) // Искать по изменению(может меняться значение или нет)
+                {
+                    if (atr_in_table.change != change)
+                        find_key = null;
                 }
 
                 if (find_key != null)   // Если нашелся идентификатор соответствующий атрибутам
