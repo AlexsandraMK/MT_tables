@@ -1,0 +1,9 @@
+﻿int int
+float jarko
+char a, b
+float #@!%
+int 1blah
+int blah1
+int _k
+int k_k
+int k_k_k-
